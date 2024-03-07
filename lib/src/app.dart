@@ -4,9 +4,9 @@ import 'package:costus/src/questions/questions_view.dart';
 import 'package:flutter/material.dart';
 
 final colorScheme =
-    ColorScheme.fromSeed(seedColor: const Color.fromRGBO(255, 36, 0, 1));
+    ColorScheme.fromSeed(seedColor: const Color.fromRGBO(242, 41, 107, 1));
 final colorSchemeDark = ColorScheme.fromSeed(
-    seedColor: const Color.fromRGBO(255, 36, 0, 1),
+    seedColor: const Color.fromRGBO(242, 41, 107, 1),
     brightness: Brightness.dark);
 
 /// The Widget that configures your application.

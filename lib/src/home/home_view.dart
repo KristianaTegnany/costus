@@ -1,4 +1,8 @@
+import 'package:costus/src/widget/my_appbar.dart';
+import 'package:costus/src/widget/outlined_button.dart';
+import 'package:costus/src/widget/rounded_button.dart';
 import 'package:costus/src/questions/questions_view.dart';
+import 'package:costus/src/widget/title.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -17,37 +21,35 @@ class _HomeViewState extends State<HomeView> {
         arguments: widget.isElectrical);
   }
 
+  void onAveragePressed() {}
+  void onDifferencePressed() {}
+  void onM2Pressed() {}
+  void onEstimatePressed() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        iconTheme: const IconThemeData()
-            .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-        title: Text(
-          'COSTUS',
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
+      appBar: const MyAppBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              widget.isElectrical ? 'ELECTRICAL' : 'MECHANICAL',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            const MyTitle(text: 'Which rate shall I use?'),
+            MyOutlinedButton(text: 'Average Rate?', onPress: onAveragePressed),
             const SizedBox(
-              height: 40,
+              height: 10,
             ),
-            FilledButton.icon(
-                style: const ButtonStyle(
-                    padding: MaterialStatePropertyAll(
-                        EdgeInsets.symmetric(horizontal: 20))),
-                onPressed: goToNext,
-                icon: const Text('Continue'),
-                label: const Icon(Icons.east))
+            MyOutlinedButton(
+                text: 'Difference Rate?', onPress: onDifferencePressed),
+            const SizedBox(
+              height: 10,
+            ),
+            MyOutlinedButton(text: 'm2 Rate?', onPress: onM2Pressed),
+            const SizedBox(
+              height: 10,
+            ),
+            MyOutlinedButton(
+                text: 'Estimate on m2 Rate?', onPress: onEstimatePressed),
           ],
         ),
       ),
