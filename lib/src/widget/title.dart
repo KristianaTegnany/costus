@@ -8,12 +8,18 @@ class MyTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-          color: hasBackground
-              ? Theme.of(context).colorScheme.onPrimary
-              : Theme.of(context).colorScheme.primary),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: hasBackground
+                ? Theme.of(context).colorScheme.onPrimary
+                : Theme.of(context).colorScheme.onBackground),
+      ),
     );
   }
 }

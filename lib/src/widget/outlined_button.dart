@@ -10,10 +10,12 @@ class MyOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      style: const ButtonStyle(
-          side: MaterialStatePropertyAll(BorderSide.none),
-          padding:
-              MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 20))),
+      style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(
+              Theme.of(context).colorScheme.primary.withOpacity(0.1)),
+          side: const MaterialStatePropertyAll(BorderSide.none),
+          padding: const MaterialStatePropertyAll(
+              EdgeInsets.symmetric(horizontal: 20))),
       onPressed: onPress,
       child: Text(
         text,

@@ -1,7 +1,9 @@
-import 'package:costus/src/home/home_view.dart';
+import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/steps/home_view.dart';
+import 'package:costus/src/steps/step_view.dart';
 import 'package:costus/src/login/login_view.dart';
-import 'package:costus/src/questions/questions_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 final colorScheme =
     ColorScheme.fromSeed(seedColor: const Color.fromRGBO(242, 41, 107, 1));
@@ -46,15 +48,11 @@ class MyApp extends StatelessWidget {
           settings: routeSettings,
           builder: (BuildContext context) {
             switch (routeSettings.name) {
-              case LoginView.routeName:
-                return const LoginView();
-              case HomeView.routeName:
-                return HomeView(isElectrical: routeSettings.arguments as bool);
-              case QuestionsView.routeName:
+              case StepView.routeName:
+                return BlocProvider(
+                    create: (context) => StepCubit(), child: const StepView());
               default:
-                return QuestionsView(
-                  isElectrical: routeSettings.arguments as bool,
-                );
+                return const LoginView();
             }
           },
         );

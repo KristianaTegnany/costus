@@ -1,4 +1,4 @@
-import 'package:costus/src/home/home_view.dart';
+import 'package:costus/src/steps/step_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,14 +17,14 @@ class _LoginViewState extends State<LoginView> {
 
   bool obscureText = true;
 
-  void goToQuestions() {
+  void goToHome() {
     bool isElectrical = _usernameController.text == 'costus' &&
         _passwordController.text == 'electrical';
     bool isMechanical = _usernameController.text == 'costus' &&
         _passwordController.text == 'mechanical';
 
     if (isElectrical || isMechanical) {
-      Navigator.pushNamed(context, HomeView.routeName, arguments: isElectrical);
+      Navigator.pushNamed(context, StepView.routeName);
     }
   }
 
@@ -95,7 +95,7 @@ class _LoginViewState extends State<LoginView> {
                     height: 40,
                   ),
                   FilledButton(
-                      onPressed: goToQuestions,
+                      onPressed: goToHome,
                       child: const Text(
                         'Sign In',
                         style: TextStyle(fontWeight: FontWeight.bold),
