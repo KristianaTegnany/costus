@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
@@ -11,7 +11,8 @@ class LaborRateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StepLayout(
-      child: Center(child: BlocBuilder<StepCubit, MyStepState>(
+      child:
+          Center(child: BlocBuilder<StepNavigationCubit, StepNavigationState>(
         builder: (context, state) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +26,8 @@ class LaborRateView extends StatelessWidget {
               ),
               RectButton(
                   text: 'Next',
-                  onPress: () => context.read<StepCubit>().onNextPressed()),
+                  onPress: () =>
+                      context.read<StepNavigationCubit>().onNextPressed()),
             ],
           );
         },

@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/cubit/preliminary_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
@@ -11,7 +11,7 @@ class AddView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StepLayout(
-      child: Center(child: BlocBuilder<StepCubit, MyStepState>(
+      child: Center(child: BlocBuilder<PreliminaryCubit, PreliminaryState>(
         builder: (context, state) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -24,8 +24,18 @@ class AddView extends StatelessWidget {
                 height: 40,
               ),
               RectButton(
-                  text: 'Next',
-                  onPress: () => context.read<StepCubit>().onNextPressed()),
+                  text: '%',
+                  onPress: () => context
+                      .read<PreliminaryCubit>()
+                      .onPreliminaryChoiceChoosen(false)),
+              const SizedBox(
+                height: 20,
+              ),
+              RectButton(
+                  text: 'Amount',
+                  onPress: () => context
+                      .read<PreliminaryCubit>()
+                      .onPreliminaryChoiceChoosen(true)),
             ],
           );
         },

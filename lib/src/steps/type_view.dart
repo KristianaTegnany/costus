@@ -1,4 +1,5 @@
-import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/cubit/option_cubit.dart';
+import 'package:costus/src/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
@@ -11,26 +12,32 @@ class TypeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StepLayout(
-      child: Center(child: BlocBuilder<StepCubit, MyStepState>(
-        builder: (context, state) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyTitle(
-                text: state.choosenOption == Option.average
+      child: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BlocBuilder<OptionCubit, OptionState>(
+            builder: (context, state) {
+              return MyTitle(
+                text: (state as OptionChoosen).choosenOption == Option.average
                     ? "Type of the project?"
                     : "What type of project?",
                 hasBackground: true,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              RectButton(
+              );
+            },
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          BlocBuilder<StepNavigationCubit, StepNavigationState>(
+            builder: (context, state) {
+              return RectButton(
                   text: 'Next',
-                  onPress: () => context.read<StepCubit>().onNextPressed()),
-            ],
-          );
-        },
+                  onPress: () =>
+                      context.read<StepNavigationCubit>().onNextPressed());
+            },
+          ),
+        ],
       )),
     );
   }
