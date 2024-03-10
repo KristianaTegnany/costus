@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
 import 'package:flutter/material.dart';

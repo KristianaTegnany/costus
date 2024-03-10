@@ -1,4 +1,5 @@
-import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/cubit/option_cubit.dart';
+import 'package:costus/src/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/actions_view.dart';
 import 'package:costus/src/steps/add_view.dart';
 import 'package:costus/src/steps/amount_view.dart';
@@ -31,16 +32,21 @@ class StepView extends StatelessWidget {
     return StepLayout(
       isChild: false,
       child: Center(
-        child: BlocBuilder<StepCubit, MyStepState>(
+        child: BlocBuilder<StepNavigationCubit, StepNavigationState>(
           builder: (context, state) {
             Widget page = const SizedBox();
-            if (state is StepInitial) {
+            if (state is StepNavigationInitial) {
               page = const HomeView();
             }
-            if (state is StepOptionChoosen) {
-              page = StartView(
-                choosenOption: state.choosenOption,
-                onPress: () => context.read<StepCubit>().onNextPressed(),
+            if (state is NavigateToStart) {
+              page = BlocBuilder<OptionCubit, OptionState>(
+                builder: (context, state) {
+                  return StartView(
+                    choosenOption: (state as OptionChoosen).choosenOption,
+                    onPress: () =>
+                        context.read<StepNavigationCubit>().onNextPressed(),
+                  );
+                },
               );
             } else if (state is NavigateToCountry) {
               page = const CountryView();
@@ -66,7 +72,7 @@ class StepView extends StatelessWidget {
               page = const LaborRateView();
             } else if (state is NavigateToProfit) {
               page = const ProfitView();
-            } else if (state is NavigateToPreliminaries) {
+            } else if (state is NavigateToPreliminary) {
               page = const PreliminariesView();
             } else if (state is NavigateToAdd) {
               page = const AddView();
@@ -76,12 +82,12 @@ class StepView extends StatelessWidget {
               page = const AmountView();
             }
             return PopScope(
-                canPop: state is StepInitial,
+                canPop: state is StepNavigationInitial,
                 onPopInvoked: (didPop) {
                   if (didPop) {
                     return;
                   }
-                  context.read<StepCubit>().onPrevPressed();
+                  context.read<StepNavigationCubit>().onPrevPressed();
                 },
                 child: page);
           },

@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/step_cubit.dart';
+import 'package:costus/src/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/rounded_button.dart';
@@ -82,7 +82,8 @@ class ActionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return StepLayout(
       isWhite: true,
-      child: Center(child: BlocBuilder<StepCubit, MyStepState>(
+      child:
+          Center(child: BlocBuilder<StepNavigationCubit, StepNavigationState>(
         builder: (context, state) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -109,14 +110,15 @@ class ActionsView extends StatelessWidget {
               RectButton(
                   primary: true,
                   text: 'Recalculate',
-                  onPress: () => context.read<StepCubit>().onRecalculate()),
+                  onPress: () =>
+                      context.read<StepNavigationCubit>().onRecalculate()),
               const SizedBox(
                 height: 20,
               ),
               RectButton(
                   primary: true,
                   text: 'Select New Method',
-                  onPress: () => context.read<StepCubit>().onReset()),
+                  onPress: () => context.read<StepNavigationCubit>().onReset()),
             ],
           );
         },

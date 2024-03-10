@@ -1,5 +1,6 @@
-import 'package:costus/src/cubit/step_cubit.dart';
-import 'package:costus/src/steps/home_view.dart';
+import 'package:costus/src/cubit/option_cubit.dart';
+import 'package:costus/src/cubit/preliminary_cubit.dart';
+import 'package:costus/src/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/step_view.dart';
 import 'package:costus/src/login/login_view.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ final colorScheme =
 final colorSchemeDark = ColorScheme.fromSeed(
     seedColor: const Color.fromRGBO(242, 41, 107, 1),
     brightness: Brightness.dark);
+
+OptionCubit _optionCubit = OptionCubit();
+PreliminaryCubit _preliminaryCubit = PreliminaryCubit();
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -49,8 +53,15 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context) {
             switch (routeSettings.name) {
               case StepView.routeName:
-                return BlocProvider(
-                    create: (context) => StepCubit(), child: const StepView());
+                return MultiBlocProvider(providers: [
+                  BlocProvider<OptionCubit>(create: (_) => _optionCubit),
+                  BlocProvider<PreliminaryCubit>(
+                      create: (_) => _preliminaryCubit),
+                  BlocProvider<StepNavigationCubit>(
+                      create: (_) => StepNavigationCubit(
+                          optionCubit: _optionCubit,
+                          preliminaryCubit: _preliminaryCubit))
+                ], child: const StepView());
               default:
                 return const LoginView();
             }
