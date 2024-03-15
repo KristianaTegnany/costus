@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 
 class RectButton extends StatelessWidget {
   const RectButton(
-      {super.key,
-      this.primary = false,
-      required this.text,
-      required this.onPress});
+      {super.key, this.primary = false, required this.text, this.onPress});
 
   final String text;
   final bool primary;
-  final void Function() onPress;
+  final void Function()? onPress;
 
   @override
   Widget build(BuildContext context) {
+    final double opacity = onPress != null ? 1 : 0.7;
+
     return FilledButton(
       style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(primary
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.onPrimary),
+              ? Theme.of(context).colorScheme.primary.withOpacity(opacity)
+              : Theme.of(context).colorScheme.onPrimary.withOpacity(opacity)),
           elevation: const MaterialStatePropertyAll(5),
           foregroundColor:
               MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),

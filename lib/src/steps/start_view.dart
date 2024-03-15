@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/step_navigation_cubit.dart';
+import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +12,9 @@ const Map<Option, String> titles = {
 
 class StartView extends StatelessWidget {
   const StartView(
-      {super.key, required this.choosenOption, required this.onPress});
+      {super.key, required this.chosenOption, required this.onPress});
 
-  final Option? choosenOption;
+  final Option? chosenOption;
   final void Function() onPress;
 
   @override
@@ -23,7 +23,7 @@ class StartView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MyTitle(
-          text: titles[choosenOption]!,
+          text: titles[chosenOption]!,
           hasBackground: true,
         ),
         const SizedBox(

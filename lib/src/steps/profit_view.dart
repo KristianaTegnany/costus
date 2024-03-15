@@ -1,5 +1,6 @@
-import 'package:costus/src/cubit/step_navigation_cubit.dart';
+import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
+import 'package:costus/src/widget/my_textfield.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,11 @@ class ProfitView extends StatelessWidget {
                 text: "What profit on material do you want to use?",
                 hasBackground: true,
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              MyTextField(
+                  value: "",
+                  isNumber: true,
+                  label: "Profit",
+                  onChange: (value) {}),
               RectButton(
                   text: 'Next',
                   onPress: () =>

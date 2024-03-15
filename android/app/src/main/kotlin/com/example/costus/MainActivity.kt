@@ -1,4 +1,4 @@
-package com.example.costus
+package com.app.costus
 
 import io.flutter.embedding.android.FlutterActivity
 

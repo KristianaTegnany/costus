@@ -9,12 +9,12 @@ sealed class PreliminaryState {
 
 final class PreliminaryInitial extends PreliminaryState {}
 
-final class PreliminaryChoosen extends PreliminaryState {
-  const PreliminaryChoosen({required super.addingPreliminary});
+final class PreliminaryChosen extends PreliminaryState {
+  const PreliminaryChosen({required super.addingPreliminary});
 }
 
-final class PreliminaryChoiceChoosen extends PreliminaryState {
-  const PreliminaryChoiceChoosen({required this.isAmount})
+final class PreliminaryChoiceChosen extends PreliminaryState {
+  const PreliminaryChoiceChosen({required this.isAmount})
       : super(addingPreliminary: true);
   final bool isAmount;
 }

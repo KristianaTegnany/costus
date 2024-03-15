@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "961504503036",
+    "project_id": "costus-b0baf",
+    "storage_bucket": "costus-b0baf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961504503036:android:92e879817d85af2db46379",
+        "android_client_info": {
+          "package_name": "com.app.costus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961504503036-kgorbep1i9gqatoqu1l8rjkb15c7tdr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-qPTeIZlTgcA6h17GO6nhpZ63kcyJoaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961504503036-kgorbep1i9gqatoqu1l8rjkb15c7tdr4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "961504503036-pri8019nakncnq47vj3lm62md7611bsr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.costus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

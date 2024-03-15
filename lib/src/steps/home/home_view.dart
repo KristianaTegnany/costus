@@ -1,5 +1,5 @@
-import 'package:costus/src/cubit/option_cubit.dart';
-import 'package:costus/src/cubit/step_navigation_cubit.dart';
+import 'package:costus/src/steps/home/cubit/option_cubit.dart';
+import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/outlined_button.dart';
 import 'package:costus/src/widget/title.dart';
@@ -26,21 +26,21 @@ class HomeView extends StatelessWidget {
                   text: 'Average Rate',
                   onPress: () => context
                       .read<OptionCubit>()
-                      .onOptionChoosen(Option.average)),
+                      .onOptionChosen(Option.average)),
               MyOutlinedButton(
                   text: 'Difference Rate',
                   onPress: () => context
                       .read<OptionCubit>()
-                      .onOptionChoosen(Option.difference)),
+                      .onOptionChosen(Option.difference)),
               MyOutlinedButton(
                   text: 'm2 Rate',
                   onPress: () =>
-                      context.read<OptionCubit>().onOptionChoosen(Option.m2)),
+                      context.read<OptionCubit>().onOptionChosen(Option.m2)),
               MyOutlinedButton(
                   text: 'Estimate on m2 Rate',
                   onPress: () => context
                       .read<OptionCubit>()
-                      .onOptionChoosen(Option.estimate)),
+                      .onOptionChosen(Option.estimate)),
             ],
           );
         },

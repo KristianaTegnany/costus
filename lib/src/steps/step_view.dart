@@ -1,24 +1,24 @@
-import 'package:costus/src/cubit/option_cubit.dart';
-import 'package:costus/src/cubit/step_navigation_cubit.dart';
+import 'package:costus/src/steps/home/cubit/option_cubit.dart';
+import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/actions_view.dart';
 import 'package:costus/src/steps/add_view.dart';
 import 'package:costus/src/steps/amount_view.dart';
-import 'package:costus/src/steps/city_view.dart';
-import 'package:costus/src/steps/competition_view.dart';
-import 'package:costus/src/steps/country_view.dart';
-import 'package:costus/src/steps/home_view.dart';
+import 'package:costus/src/steps/city/city_view.dart';
+import 'package:costus/src/steps/competition/competition_view.dart';
+import 'package:costus/src/steps/country/country_view.dart';
+import 'package:costus/src/steps/home/home_view.dart';
 import 'package:costus/src/steps/labor_hour_view.dart';
 import 'package:costus/src/steps/labor_rate_view.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/steps/material_view.dart';
 import 'package:costus/src/steps/part_view.dart';
 import 'package:costus/src/steps/percent_view.dart';
-import 'package:costus/src/steps/preliminaries_view.dart';
+import 'package:costus/src/steps/preliminary/preliminaries_view.dart';
 import 'package:costus/src/steps/profit_view.dart';
 import 'package:costus/src/steps/result_view.dart';
-import 'package:costus/src/steps/size_view.dart';
+import 'package:costus/src/steps/size/size_view.dart';
 import 'package:costus/src/steps/start_view.dart';
-import 'package:costus/src/steps/type_view.dart';
+import 'package:costus/src/steps/type/type_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,7 +42,7 @@ class StepView extends StatelessWidget {
               page = BlocBuilder<OptionCubit, OptionState>(
                 builder: (context, state) {
                   return StartView(
-                    choosenOption: (state as OptionChoosen).choosenOption,
+                    chosenOption: (state as OptionChosen).chosenOption,
                     onPress: () =>
                         context.read<StepNavigationCubit>().onNextPressed(),
                   );

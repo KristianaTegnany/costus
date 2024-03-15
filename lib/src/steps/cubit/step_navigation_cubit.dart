@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:costus/src/cubit/option_cubit.dart';
-import 'package:costus/src/cubit/preliminary_cubit.dart';
+import 'package:costus/src/steps/home/cubit/option_cubit.dart';
+import 'package:costus/src/steps/preliminary/cubit/preliminary_cubit.dart';
 import 'package:meta/meta.dart';
 
 part 'step_navigation_state.dart';
@@ -13,22 +13,22 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
       required PreliminaryCubit preliminaryCubit})
       : super(StepNavigationInitial()) {
     optionCubit.stream.listen((event) {
-      if (event is OptionChoosen) {
-        choosenOption = event.choosenOption;
+      if (event is OptionChosen) {
+        chosenOption = event.chosenOption;
         emit(NavigateToStart());
       }
     });
 
     preliminaryCubit.stream.listen((event) {
       switch (event) {
-        case PreliminaryChoosen():
+        case PreliminaryChosen():
           addingPreliminary = event.addingPreliminary;
           if (addingPreliminary ?? false) {
             emit(NavigateToAdd());
           } else {
             emit(NavigateToResult());
           }
-        case PreliminaryChoiceChoosen():
+        case PreliminaryChoiceChosen():
           isAmount = event.isAmount;
           if (isAmount ?? false) {
             emit(NavigateToAmount());
@@ -41,16 +41,16 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
     });
   }
 
-  Option? choosenOption;
+  Option? chosenOption;
   bool? addingPreliminary;
   bool? isAmount;
 
   void onNextPressed() {
     switch (state) {
       case NavigateToStart():
-        if (choosenOption == Option.average) {
+        if (chosenOption == Option.average) {
           emit(NavigateToCountry());
-        } else if (choosenOption == Option.difference) {
+        } else if (chosenOption == Option.difference) {
           emit(NavigateToLaborHour());
         } else {
           emit(NavigateToType());
@@ -58,16 +58,15 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
       case NavigateToCountry():
         emit(NavigateToCity());
       case NavigateToCity():
-        emit(
-            choosenOption == Option.m2 ? NavigateToResult() : NavigateToSize());
+        emit(chosenOption == Option.m2 ? NavigateToResult() : NavigateToSize());
       case NavigateToSize():
-        emit(choosenOption == Option.estimate
+        emit(chosenOption == Option.estimate
             ? NavigateToResult()
             : NavigateToType());
       case NavigateToType():
-        if (choosenOption == Option.m2) {
+        if (chosenOption == Option.m2) {
           emit(NavigateToPart());
-        } else if (choosenOption == Option.estimate) {
+        } else if (chosenOption == Option.estimate) {
           emit(NavigateToCountry());
         } else {
           emit(NavigateToCompetition());
@@ -102,9 +101,9 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
       case NavigateToLaborHour():
         emit(NavigateToStart());
       case NavigateToCountry():
-        if (choosenOption == Option.m2) {
+        if (chosenOption == Option.m2) {
           emit(NavigateToPart());
-        } else if (choosenOption == Option.estimate) {
+        } else if (chosenOption == Option.estimate) {
           emit(NavigateToType());
         } else {
           emit(NavigateToStart());
@@ -114,7 +113,7 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
       case NavigateToSize():
         emit(NavigateToCity());
       case NavigateToType():
-        emit(choosenOption == Option.average
+        emit(chosenOption == Option.average
             ? NavigateToSize()
             : NavigateToStart());
       case NavigateToPart():
@@ -122,11 +121,11 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
       case NavigateToCompetition():
         emit(NavigateToType());
       case NavigateToResult():
-        if (choosenOption == Option.average) {
+        if (chosenOption == Option.average) {
           emit(NavigateToCompetition());
-        } else if (choosenOption == Option.m2) {
+        } else if (chosenOption == Option.m2) {
           emit(NavigateToCity());
-        } else if (choosenOption == Option.estimate) {
+        } else if (chosenOption == Option.estimate) {
           emit(NavigateToSize());
         } else {
           if (addingPreliminary == null || addingPreliminary == false) {

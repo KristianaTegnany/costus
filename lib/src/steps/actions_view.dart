@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/step_navigation_cubit.dart';
+import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/rounded_button.dart';

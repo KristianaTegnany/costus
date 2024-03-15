@@ -6,11 +6,11 @@ part 'preliminary_state.dart';
 class PreliminaryCubit extends Cubit<PreliminaryState> {
   PreliminaryCubit() : super(PreliminaryInitial());
 
-  void onPreliminaryChoosen(bool choice) {
-    emit(PreliminaryChoosen(addingPreliminary: choice));
+  void onPreliminaryChosen(bool choice) {
+    emit(PreliminaryChosen(addingPreliminary: choice));
   }
 
-  void onPreliminaryChoiceChoosen(bool isAmount) {
-    emit(PreliminaryChoiceChoosen(isAmount: isAmount));
+  void onPreliminaryChoiceChosen(bool isAmount) {
+    emit(PreliminaryChoiceChosen(isAmount: isAmount));
   }
 }

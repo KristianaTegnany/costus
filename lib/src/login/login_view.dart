@@ -1,4 +1,4 @@
-import 'package:costus/src/steps/step_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,22 +16,60 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool obscureText = true;
+  bool isLoading = false;
+  bool isFormValid = false;
+  bool isLoginValid = false;
 
-  void goToHome() {
-    bool isElectrical = _usernameController.text == 'costus' &&
-        _passwordController.text == 'electrical';
-    bool isMechanical = _usernameController.text == 'costus' &&
-        _passwordController.text == 'mechanical';
+  void forgotPassword() {
+    FirebaseAuth.instance
+        .sendPasswordResetEmail(email: _usernameController.text);
+  }
 
-    if (isElectrical || isMechanical) {
-      Navigator.pushNamed(context, StepView.routeName);
+  void createAccount() {
+    //FirebaseAuth.instance.cre
+  }
+
+  void setLoading(bool loading) {
+    setState(() {
+      isLoading = loading;
+    });
+  }
+
+  void login() {
+    setLoading(true);
+
+    try {
+      FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _usernameController.text,
+              password: _passwordController.text)
+          .then((_) => setLoading(false));
+    } on FirebaseAuthException catch (e) {
+      setLoading(false);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message ?? '')));
     }
+  }
+
+  void validateForm(String value) {
+    setState(() {
+      isLoginValid = _usernameController.text.isNotEmpty;
+      isFormValid = _passwordController.text.isNotEmpty &&
+          _usernameController.text.isNotEmpty;
+    });
   }
 
   void toggleLock() {
     setState(() {
       obscureText = !obscureText;
     });
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -69,6 +107,7 @@ class _LoginViewState extends State<LoginView> {
                           padding: EdgeInsets.only(right: 10),
                           child: Icon(Icons.person),
                         )),
+                    onChanged: validateForm,
                   ),
                   const SizedBox(
                     height: 20,
@@ -90,16 +129,52 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                     ),
+                    onChanged: validateForm,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                        onPressed: isLoginValid ? forgotPassword : null,
+                        child: Text(
+                          "Forgot password?",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onBackground
+                                  .withOpacity(isLoginValid ? 1 : 0.5)),
+                        )),
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   FilledButton(
-                      onPressed: goToHome,
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
+                      style: const ButtonStyle(
+                          minimumSize: MaterialStatePropertyAll(Size(150, 40))),
+                      onPressed: isFormValid ? login : null,
+                      child: isLoading
+                          ? Container(
+                              height: 25,
+                              width: 25,
+                              padding: const EdgeInsets.all(2.0),
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 3,
+                              ),
+                            )
+                          : const Text(
+                              'Sign In',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account? "),
+                      TextButton(
+                          onPressed: createAccount,
+                          child: const Text("Sign Up"))
+                    ],
+                  ),
                 ],
               ),
             ),

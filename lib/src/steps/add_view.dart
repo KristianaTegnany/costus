@@ -1,4 +1,4 @@
-import 'package:costus/src/cubit/preliminary_cubit.dart';
+import 'package:costus/src/steps/preliminary/cubit/preliminary_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
@@ -27,7 +27,7 @@ class AddView extends StatelessWidget {
                   text: '%',
                   onPress: () => context
                       .read<PreliminaryCubit>()
-                      .onPreliminaryChoiceChoosen(false)),
+                      .onPreliminaryChoiceChosen(false)),
               const SizedBox(
                 height: 20,
               ),
@@ -35,7 +35,7 @@ class AddView extends StatelessWidget {
                   text: 'Amount',
                   onPress: () => context
                       .read<PreliminaryCubit>()
-                      .onPreliminaryChoiceChoosen(true)),
+                      .onPreliminaryChoiceChosen(true)),
             ],
           );
         },
