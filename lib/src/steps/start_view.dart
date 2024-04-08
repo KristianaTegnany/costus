@@ -1,4 +1,5 @@
 import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
+import 'package:costus/src/steps/layout/step_layout.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
 import 'package:flutter/material.dart';
@@ -19,18 +20,20 @@ class StartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        MyTitle(
-          text: titles[chosenOption]!,
-          hasBackground: true,
-        ),
-        const SizedBox(
-          height: 40,
-        ),
-        RectButton(text: 'Start', onPress: onPress),
-      ],
+    return StepLayout(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          MyTitle(
+            text: titles[chosenOption]!,
+            hasBackground: true,
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          RectButton(text: 'Start', onPress: onPress),
+        ],
+      ),
     );
   }
 }

@@ -8,25 +8,32 @@ part 'cities_state.dart';
 class CitiesCubit extends Cubit<CitiesState> {
   CitiesCubit() : super(CitiesInitial());
 
-  void onCountryChanged(String country) {
-    FirebaseFirestore.instance
-        .collection('steps')
-        .doc("countries")
-        .collection("items")
-        .doc(country)
-        .snapshots()
-        .listen((snapshot) {
-      if (snapshot.data() != null) {
-        emit(CitiesLoaded(
-            question: snapshot.data()?["question"],
-            placeholder: snapshot.data()?["placeholder"],
-            cities: (snapshot.data()?["cities"] as List)
-                .map((city) => {
-                      DataKey.id: city["name"] as String,
-                      DataKey.value: city["name"] as String
-                    })
-                .toList()));
-      }
-    });
+  void onCountryChanged(String? country) {
+    if (country != null) {
+      FirebaseFirestore.instance
+          .collection('steps')
+          .doc("countries")
+          .snapshots()
+          .listen((countriesSnapshot) {
+        countriesSnapshot.reference
+            .collection("items")
+            .doc(country.split(':')[0])
+            .snapshots()
+            .listen((snapshot) {
+          if (snapshot.data() != null) {
+            emit(CitiesLoaded(
+                question: countriesSnapshot.data()?["question_city"],
+                placeholder: countriesSnapshot.data()?["placeholder_city"],
+                cities: (snapshot.data()?["cities"] as List)
+                    .map((city) => {
+                          DataKey.id: city["name"] as String,
+                          DataKey.data: city["value"].toString(),
+                          DataKey.value: city["name"] as String
+                        })
+                    .toList()));
+          }
+        });
+      });
+    }
   }
 }

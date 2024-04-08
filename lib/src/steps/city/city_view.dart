@@ -1,7 +1,7 @@
 import 'package:costus/src/steps/city/cubit/cities_cubit.dart';
-import 'package:costus/src/steps/city/cubit/city_cubit.dart';
 import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
+import 'package:costus/src/steps/result/cubit/result_cubit.dart';
 import 'package:costus/src/widget/my_dropdown.dart';
 import 'package:costus/src/widget/rect_button.dart';
 import 'package:costus/src/widget/title.dart';
@@ -17,8 +17,8 @@ class CityView extends StatelessWidget {
       child: BlocBuilder<CitiesCubit, CitiesState>(
         builder: (context, state) {
           if (state is CitiesLoaded) {
-            return BlocBuilder<CityCubit, CityState>(
-                builder: (context, cityState) {
+            return BlocBuilder<ResultCubit, ResultState>(
+                builder: (context, resultState) {
               return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -31,16 +31,15 @@ class CityView extends StatelessWidget {
                         child: MyDropDown(
                           data: state.cities ?? [],
                           label: state.placeholder ?? '',
-                          value:
-                              cityState is CityChosen ? cityState.city : null,
+                          value: resultState.city,
                           onChange: (value) =>
-                              context.read<CityCubit>().onCityChosen(value),
+                              context.read<ResultCubit>().onCityChanged(value),
                         )),
                     BlocBuilder<StepNavigationCubit, StepNavigationState>(
                         builder: (context, _) {
                       return RectButton(
                           text: 'Next',
-                          onPress: cityState is CityChosen
+                          onPress: resultState.city != null
                               ? () => context
                                   .read<StepNavigationCubit>()
                                   .onNextPressed()
@@ -49,7 +48,9 @@ class CityView extends StatelessWidget {
                   ]);
             });
           }
-          return const SizedBox();
+          return CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.background,
+          );
         },
       ),
     ));

@@ -20,6 +20,7 @@ class SizesCubit extends Cubit<SizesState> {
             sizes: (snapshot.data()?["items"] as List)
                 .map((size) => {
                       DataKey.id: size["name"] as String,
+                      DataKey.data: size["value"].toString(),
                       DataKey.value: size["name"] as String
                     })
                 .toList()));

@@ -11,18 +11,23 @@ class TypesCubit extends Cubit<TypesState> {
         .collection('steps')
         .doc("type")
         .snapshots()
-        .listen((snapshot) {
-      if (snapshot.data() != null) {
-        emit(TypesLoaded(
-            question: snapshot.data()?["question"],
-            questionAverage: snapshot.data()?["question_average"],
-            placeholder: snapshot.data()?["placeholder"],
-            types: (snapshot.data()?["items"] as List)
-                .map((type) => {
-                      DataKey.id: type["name"] as String,
-                      DataKey.value: type["name"] as String
-                    })
-                .toList()));
+        .listen((typeSnapshot) {
+      if (typeSnapshot.data() != null) {
+        typeSnapshot.reference
+            .collection("items")
+            .snapshots()
+            .listen((snapshot) {
+          emit(TypesLoaded(
+              question: typeSnapshot.data()?["question"],
+              placeholder: typeSnapshot.data()?["placeholder"],
+              types: snapshot.docs
+                  .map((type) => {
+                        DataKey.id: type.id,
+                        DataKey.data: type["value"].toString(),
+                        DataKey.value: type["name"] as String
+                      })
+                  .toList()));
+        });
       }
     });
   }

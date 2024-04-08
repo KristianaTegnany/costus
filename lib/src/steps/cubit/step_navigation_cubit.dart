@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:costus/src/steps/home/cubit/option_cubit.dart';
 import 'package:costus/src/steps/preliminary/cubit/preliminary_cubit.dart';
+import 'package:costus/src/steps/result/cubit/result_cubit.dart';
 import 'package:meta/meta.dart';
 
 part 'step_navigation_state.dart';
@@ -10,7 +11,8 @@ enum Option { average, difference, m2, estimate }
 class StepNavigationCubit extends Cubit<StepNavigationState> {
   StepNavigationCubit(
       {required OptionCubit optionCubit,
-      required PreliminaryCubit preliminaryCubit})
+      required PreliminaryCubit preliminaryCubit,
+      required this.resultCubit})
       : super(StepNavigationInitial()) {
     optionCubit.stream.listen((event) {
       if (event is OptionChosen) {
@@ -41,6 +43,7 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
     });
   }
 
+  final ResultCubit resultCubit;
   Option? chosenOption;
   bool? addingPreliminary;
   bool? isAmount;
@@ -48,31 +51,27 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
   void onNextPressed() {
     switch (state) {
       case NavigateToStart():
-        if (chosenOption == Option.average) {
-          emit(NavigateToCountry());
-        } else if (chosenOption == Option.difference) {
+        if (chosenOption == Option.difference) {
           emit(NavigateToLaborHour());
         } else {
-          emit(NavigateToType());
+          emit(NavigateToCountry());
         }
       case NavigateToCountry():
         emit(NavigateToCity());
       case NavigateToCity():
-        emit(chosenOption == Option.m2 ? NavigateToResult() : NavigateToSize());
+        emit(NavigateToType());
       case NavigateToSize():
         emit(chosenOption == Option.estimate
             ? NavigateToResult()
-            : NavigateToType());
+            : NavigateToCompetition());
       case NavigateToType():
-        if (chosenOption == Option.m2) {
-          emit(NavigateToPart());
-        } else if (chosenOption == Option.estimate) {
-          emit(NavigateToCountry());
-        } else {
-          emit(NavigateToCompetition());
-        }
+        emit(NavigateToPart());
       case NavigateToPart():
-        emit(NavigateToCountry());
+        if (chosenOption == Option.m2) {
+          emit(NavigateToResult());
+        } else {
+          emit(NavigateToSize());
+        }
       case NavigateToCompetition():
         emit(NavigateToResult());
       case NavigateToResult():
@@ -101,30 +100,22 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
       case NavigateToLaborHour():
         emit(NavigateToStart());
       case NavigateToCountry():
-        if (chosenOption == Option.m2) {
-          emit(NavigateToPart());
-        } else if (chosenOption == Option.estimate) {
-          emit(NavigateToType());
-        } else {
-          emit(NavigateToStart());
-        }
+        emit(NavigateToStart());
       case NavigateToCity():
         emit(NavigateToCountry());
       case NavigateToSize():
-        emit(NavigateToCity());
+        emit(NavigateToPart());
       case NavigateToType():
-        emit(chosenOption == Option.average
-            ? NavigateToSize()
-            : NavigateToStart());
+        emit(NavigateToCity());
       case NavigateToPart():
         emit(NavigateToType());
       case NavigateToCompetition():
-        emit(NavigateToType());
+        emit(NavigateToSize());
       case NavigateToResult():
         if (chosenOption == Option.average) {
           emit(NavigateToCompetition());
         } else if (chosenOption == Option.m2) {
-          emit(NavigateToCity());
+          emit(NavigateToPart());
         } else if (chosenOption == Option.estimate) {
           emit(NavigateToSize());
         } else {
@@ -159,10 +150,12 @@ class StepNavigationCubit extends Cubit<StepNavigationState> {
   }
 
   void onRecalculate() {
+    resultCubit.emit(resultCubit.state.empty());
     emit(NavigateToStart());
   }
 
   void onReset() {
+    resultCubit.emit(resultCubit.state.empty());
     emit(StepNavigationInitial());
   }
 }

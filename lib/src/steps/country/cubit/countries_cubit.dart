@@ -23,6 +23,7 @@ class CountriesCubit extends Cubit<CountriesState> {
               countries: snapshot.docs
                   .map((country) => {
                         DataKey.id: country.id,
+                        DataKey.data: country["value"].toString(),
                         DataKey.value: country["name"] as String
                       })
                   .toList()));

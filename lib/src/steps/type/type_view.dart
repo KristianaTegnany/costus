@@ -1,7 +1,7 @@
 import 'package:costus/src/steps/home/cubit/option_cubit.dart';
 import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/layout/step_layout.dart';
-import 'package:costus/src/steps/type/cubit/type_cubit.dart';
+import 'package:costus/src/steps/result/cubit/result_cubit.dart';
 import 'package:costus/src/steps/type/cubit/types_cubit.dart';
 import 'package:costus/src/widget/my_dropdown.dart';
 import 'package:costus/src/widget/rect_button.dart';
@@ -17,7 +17,7 @@ class TypeView extends StatelessWidget {
     return StepLayout(
       child: Center(child: Builder(builder: (context) {
         final state = context.watch<TypesCubit>().state;
-        final typeState = context.watch<TypeCubit>().state;
+        final type = context.watch<ResultCubit>().state.type;
         if (state is TypesLoaded) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -25,10 +25,7 @@ class TypeView extends StatelessWidget {
               BlocBuilder<OptionCubit, OptionState>(
                 builder: (context, optionState) {
                   return MyTitle(
-                    text: (optionState as OptionChosen).chosenOption ==
-                            Option.average
-                        ? state.questionAverage ?? ''
-                        : state.question ?? '',
+                    text: state.question ?? '',
                     hasBackground: true,
                   );
                 },
@@ -38,16 +35,16 @@ class TypeView extends StatelessWidget {
                 child: MyDropDown(
                   data: state.types ?? [],
                   label: state.placeholder ?? '',
-                  value: typeState is TypeChosen ? typeState.type : null,
+                  value: type,
                   onChange: (value) =>
-                      context.read<TypeCubit>().onTypeChosen(value),
+                      context.read<ResultCubit>().onTypeChanged(value),
                 ),
               ),
               BlocBuilder<StepNavigationCubit, StepNavigationState>(
                 builder: (context, _) {
                   return RectButton(
                       text: 'Next',
-                      onPress: typeState is TypeChosen
+                      onPress: type != null
                           ? () => context
                               .read<StepNavigationCubit>()
                               .onNextPressed()
@@ -57,7 +54,9 @@ class TypeView extends StatelessWidget {
             ],
           );
         }
-        return const SizedBox();
+        return CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.background,
+        );
       })),
     );
   }

@@ -1,21 +1,18 @@
-import 'dart:async';
-
+import 'package:costus/src/signup/signup_view.dart';
 import 'package:costus/src/steps/city/cubit/cities_cubit.dart';
-import 'package:costus/src/steps/city/cubit/city_cubit.dart';
-import 'package:costus/src/steps/competition/cubit/competition_cubit.dart';
 import 'package:costus/src/steps/competition/cubit/competitions_cubit.dart';
 import 'package:costus/src/steps/country/cubit/countries_cubit.dart';
-import 'package:costus/src/steps/country/cubit/country_cubit.dart';
 import 'package:costus/src/steps/home/cubit/option_cubit.dart';
+import 'package:costus/src/steps/part/cubit/part_cubit.dart';
 import 'package:costus/src/steps/preliminary/cubit/preliminary_cubit.dart';
-import 'package:costus/src/steps/size/cubit/size_cubit.dart';
+import 'package:costus/src/steps/result/cubit/result_cubit.dart';
 import 'package:costus/src/steps/cubit/step_navigation_cubit.dart';
 import 'package:costus/src/steps/size/cubit/sizes_cubit.dart';
-import 'package:costus/src/steps/type/cubit/type_cubit.dart';
 import 'package:costus/src/steps/step_view.dart';
 import 'package:costus/src/login/login_view.dart';
 import 'package:costus/src/steps/type/cubit/types_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:costus/src/welcome/welcome_view.dart';
+import 'package:costus/src/widget/unanimated_page_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,23 +33,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late StreamSubscription<User?> _sub;
+  //late StreamSubscription<User?> _sub;
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
 
-    _sub = FirebaseAuth.instance.userChanges().listen((event) {
+    /*_sub = FirebaseAuth.instance.userChanges().listen((event) {
       _navigatorKey.currentState?.pushReplacementNamed(
         event != null ? StepView.routeName : LoginView.routeName,
       );
-    });
+    });*/
   }
 
   @override
   void dispose() {
-    _sub.cancel();
+    //_sub.cancel();
     super.dispose();
   }
 
@@ -63,9 +60,11 @@ class _MyAppState extends State<MyApp> {
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return MaterialApp(
-      initialRoute: FirebaseAuth.instance.currentUser == null
+      initialRoute:
+          '/' /*FirebaseAuth.instance.currentUser == null
           ? LoginView.routeName
-          : StepView.routeName,
+          : StepView.routeName*/
+      ,
       navigatorKey: _navigatorKey,
       // Providing a restorationScopeId allows the Navigator built by the
       // MaterialApp to restore the navigation stack when a user leaves and
@@ -77,8 +76,11 @@ class _MyAppState extends State<MyApp> {
       // preferred ThemeMode (light, dark, or system default) from the
       // SettingsController to display the correct theme.
       theme: ThemeData().copyWith(
-        colorScheme: colorScheme,
-      ),
+          colorScheme: colorScheme,
+          appBarTheme: AppBarTheme(
+              backgroundColor: colorScheme.background,
+              surfaceTintColor: colorScheme.background,
+              elevation: 2)),
 
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: colorSchemeDark,
@@ -87,37 +89,46 @@ class _MyAppState extends State<MyApp> {
       // Define a function to handle named routes in order to support
       // Flutter web url navigation and deep linking.
       onGenerateRoute: (RouteSettings routeSettings) {
-        return MaterialPageRoute<void>(
+        return UnanimatedPageRoute<void>(
           settings: routeSettings,
           builder: (BuildContext context) {
-            if (routeSettings.name == StepView.routeName) {
-              OptionCubit optionCubit = OptionCubit();
+            CitiesCubit citiesCubit = CitiesCubit();
+            PartsCubit partsCubit = PartsCubit();
+            ResultCubit resultCubit =
+                ResultCubit(citiesCubit: citiesCubit, partsCubit: partsCubit);
+
+            if (routeSettings.name == SignupView.routeName) {
+              return const SignupView();
+            } else if (routeSettings.name == StepView.routeName) {
+              OptionCubit optionCubit = OptionCubit(
+                  resultCubit: resultCubit,
+                  citiesCubit: citiesCubit,
+                  partsCubit: partsCubit);
               PreliminaryCubit preliminaryCubit = PreliminaryCubit();
-              CityCubit cityCubit = CityCubit();
-              CitiesCubit citiesCubit = CitiesCubit();
-              CountryCubit countryCubit =
-                  CountryCubit(cityCubit: cityCubit, citiesCubit: citiesCubit);
 
               return MultiBlocProvider(providers: [
-                BlocProvider<OptionCubit>(create: (_) => optionCubit),
-                BlocProvider<PreliminaryCubit>(create: (_) => preliminaryCubit),
-                BlocProvider(create: (_) => countryCubit),
-                BlocProvider(create: (_) => CountriesCubit()),
-                BlocProvider(create: (_) => cityCubit),
                 BlocProvider(create: (_) => citiesCubit),
+                BlocProvider(create: (_) => resultCubit),
+                BlocProvider(create: (_) => optionCubit),
+                BlocProvider(create: (_) => preliminaryCubit),
+                BlocProvider(create: (_) => CountriesCubit()),
                 BlocProvider(create: (_) => SizesCubit()),
-                BlocProvider(create: (_) => SizeCubit()),
+                BlocProvider(create: (_) => partsCubit),
                 BlocProvider(create: (_) => TypesCubit()),
-                BlocProvider(create: (_) => TypeCubit()),
                 BlocProvider(create: (_) => CompetitionsCubit()),
-                BlocProvider(create: (_) => CompetitionCubit()),
                 BlocProvider<StepNavigationCubit>(
                     create: (_) => StepNavigationCubit(
+                        resultCubit: resultCubit,
                         optionCubit: optionCubit,
                         preliminaryCubit: preliminaryCubit))
               ], child: const StepView());
-            } else {
+            } else if (routeSettings.name == LoginView.routeName) {
               return const LoginView();
+            } else {
+              return BlocProvider(
+                create: (context) => resultCubit,
+                child: const WelcomeView(),
+              );
             }
           },
         );

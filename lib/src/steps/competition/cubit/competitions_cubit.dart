@@ -19,6 +19,7 @@ class CompetitionsCubit extends Cubit<CompetitionsState> {
             competitions: (snapshot.data()?["items"] as List)
                 .map((competition) => {
                       DataKey.id: competition["name"] as String,
+                      DataKey.data: competition["value"].toString(),
                       DataKey.value: competition["name"] as String
                     })
                 .toList()));

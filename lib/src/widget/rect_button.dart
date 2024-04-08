@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class RectButton extends StatelessWidget {
   const RectButton(
@@ -21,8 +22,8 @@ class RectButton extends StatelessWidget {
           foregroundColor:
               MaterialStatePropertyAll(Theme.of(context).colorScheme.primary),
           shape: const MaterialStatePropertyAll(BeveledRectangleBorder()),
-          padding: const MaterialStatePropertyAll(
-              EdgeInsets.symmetric(horizontal: 40, vertical: 10))),
+          padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(
+              horizontal: 40, vertical: kIsWeb ? 20 : 10))),
       onPressed: onPress,
       child: Text(
         text,
@@ -30,8 +31,8 @@ class RectButton extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: primary
-                ? Theme.of(context).colorScheme.onPrimary
-                : Theme.of(context).colorScheme.primary),
+                ? Theme.of(context).colorScheme.onPrimary.withOpacity(opacity)
+                : Theme.of(context).colorScheme.primary.withOpacity(opacity)),
       ),
     );
   }
